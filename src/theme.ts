@@ -35,6 +35,7 @@ export default createMuiTheme({
       '@global': {
         'html, body, #root': {
           height: '100%',
+          backgroundColor: 'black',
         },
       },
     },

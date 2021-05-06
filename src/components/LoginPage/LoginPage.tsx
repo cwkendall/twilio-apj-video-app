@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, FormEvent } from 'react';
+import React, { ChangeEvent, useState, FormEvent, useEffect } from 'react';
 import { useAppState } from '../../state';
 
 import Button from '@material-ui/core/Button';
@@ -62,6 +62,19 @@ export default function LoginPage() {
   const [authError, setAuthError] = useState<Error | null>(null);
 
   const isAuthEnabled = Boolean(process.env.REACT_APP_SET_AUTH);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location?.state?.from?.search ?? location.search);
+    const id_token = params.get('id_token');
+    if (id_token) {
+      setAuthError(null);
+      signIn?.(id_token)
+        .then(() => {
+          history.replace(location?.state?.from || { pathname: '/' });
+        })
+        .catch(err => setAuthError(err));
+    }
+  }, [location, history, signIn]);
 
   const login = () => {
     setAuthError(null);
