@@ -102,7 +102,6 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 <MenuItem value="default">Server Default</MenuItem>
               </Select>
             </FormControl>
-
             <FormControl className={classes.formControl}>
               <InputLabel id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</InputLabel>
               <Select
@@ -181,6 +180,28 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
                 value={withDefault(settings.maxAudioBitrate)}
                 onChange={handleNumberChange}
               />
+            </FormControl>
+            <FormControl>
+              <InputLabel id={inputLabels.region}>Region</InputLabel>
+              <Select
+                fullWidth
+                disabled={isDisabled}
+                name={inputLabels.region}
+                label={inputLabels.region}
+                value={withDefault(settings.region)}
+                onChange={handleChange}
+              >
+                <MenuItem value="gll">Auto-select</MenuItem>
+                <MenuItem value="au1">Australia</MenuItem>
+                <MenuItem value="us1">US East Coast</MenuItem>
+                <MenuItem value="sg1">Singapore</MenuItem>
+                <MenuItem value="jp1">Japan</MenuItem>
+                <MenuItem value="br1">Brazil</MenuItem>
+                <MenuItem value="de1">Germany</MenuItem>
+                <MenuItem value="ie1">Ireland</MenuItem>
+                <MenuItem value="in1">India</MenuItem>
+                <MenuItem value="us2">US West Coast</MenuItem>
+              </Select>
             </FormControl>
           </Grid>
         </Grid>

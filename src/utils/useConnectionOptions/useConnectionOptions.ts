@@ -23,6 +23,7 @@ export default function useConnectionOptions() {
     },
     dominantSpeaker: true,
     networkQuality: { local: 1, remote: 1 },
+    region: settings.region,
 
     // Comment this line if you are playing music.
     maxAudioBitrate: Number(settings.maxAudioBitrate),

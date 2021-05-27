@@ -15,9 +15,8 @@ export default function useFirebaseAuth() {
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   const getToken = useCallback(
-    async (user_identity: string, room_name: string) => {
+    async (user_identity: string, room_name: string, media_region: string) => {
       const headers = new window.Headers();
-
       const idToken = await user!.getIdToken();
       headers.set('Authorization', idToken);
       headers.set('content-type', 'application/json');
@@ -30,6 +29,7 @@ export default function useFirebaseAuth() {
         body: JSON.stringify({
           user_identity,
           room_name,
+          media_region,
           create_conversation: process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true',
         }),
       }).then(res => res.json());

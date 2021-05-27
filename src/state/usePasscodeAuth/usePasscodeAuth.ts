@@ -64,7 +64,7 @@ export default function usePasscodeAuth() {
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   const getToken = useCallback(
-    (name: string, room: string) => {
+    (name: string, room: string, media_region: string) => {
       return fetchToken(name, room, user!.passcode)
         .then(async res => {
           if (res.ok) {

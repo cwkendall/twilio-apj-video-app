@@ -4,6 +4,7 @@ export interface Settings {
   trackSwitchOffMode: VideoBandwidthProfileOptions['trackSwitchOffMode'];
   dominantSpeakerPriority?: Track.Priority;
   bandwidthProfileMode: VideoBandwidthProfileOptions['mode'];
+  region: string;
   maxAudioBitrate: string;
   contentPreferencesMode?: 'auto' | 'manual';
   clientTrackSwitchOffControl?: 'auto' | 'manual';
@@ -23,6 +24,7 @@ export const initialSettings: Settings = {
   maxAudioBitrate: '16000',
   contentPreferencesMode: 'auto',
   clientTrackSwitchOffControl: 'auto',
+  region: 'gll',
 };
 
 // This inputLabels object is used by ConnectionOptions.tsx. It is used to populate the id, name, and label props

@@ -43,7 +43,7 @@ const tokenHandler = async (request, response) => {
   const ROOM_TYPE = process.env.ROOM_TYPE;
   const CONVERSATIONS_SERVICE_SID = process.env.CONVERSATIONS_SERVICE_SID;
 
-  const { user_identity, room_name, create_room = true, create_conversation = false } = request.body;
+  const { user_identity, room_name, create_room = true, create_conversation = false, media_region = 'gll' } = request.body;
 
   response.setHeader('Content-Type', 'application/json');
 
@@ -101,7 +101,7 @@ const tokenHandler = async (request, response) => {
     } catch (e) {
       try {
         // If room doesn't exist, create it
-        room = await client.video.rooms.create({ uniqueName: room_name, type: ROOM_TYPE });
+        room = await client.video.rooms.create({ uniqueName: room_name, type: ROOM_TYPE, mediaRegion: media_region});
       } catch (e) {
         response.status(500);
         response.send({
