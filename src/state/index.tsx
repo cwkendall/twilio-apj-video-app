@@ -10,7 +10,12 @@ import { User } from 'firebase';
 export interface StateContextType {
   error: TwilioError | Error | null;
   setError(error: TwilioError | Error | null): void;
-  getToken(name: string, room: string, region?: string, passcode?: string): Promise<{room_type: RoomType; token: string}>;
+  getToken(
+    name: string,
+    room: string,
+    region?: string,
+    passcode?: string
+  ): Promise<{ room_type: RoomType; token: string }>;
   user?: User | null | { displayName: undefined; photoURL: undefined; passcode?: string };
   signIn?(passcode?: string): Promise<void>;
   signOut?(): Promise<void>;
@@ -67,7 +72,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     contextValue = {
       ...contextValue,
       getToken: async (user_identity, room_name, media_region) => {
-        const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
+        const endpoint = `${process.env.REACT_APP_BACKEND ?? ''}${process.env.REACT_APP_TOKEN_ENDPOINT}` || '/token';
 
         return fetch(endpoint, {
           method: 'POST',
@@ -83,7 +88,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
         }).then(res => res.json());
       },
       updateRecordingRules: async (room_sid, rules) => {
-        const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/recordingrules';
+        const endpoint = `${process.env.REACT_APP_BACKEND ?? ''}/recordingrules`;
 
         return fetch(endpoint, {
           headers: {

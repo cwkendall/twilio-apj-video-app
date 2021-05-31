@@ -21,7 +21,7 @@ export default function useFirebaseAuth() {
       headers.set('Authorization', idToken);
       headers.set('content-type', 'application/json');
 
-      const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
+      const endpoint = `${process.env.REACT_APP_BACKEND ?? ''}${process.env.REACT_APP_TOKEN_ENDPOINT}` || '/token';
 
       return fetch(endpoint, {
         method: 'POST',
@@ -45,7 +45,7 @@ export default function useFirebaseAuth() {
       headers.set('Authorization', idToken);
       headers.set('content-type', 'application/json');
 
-      return fetch('/recordingrules', {
+      return fetch(`${process.env.REACT_APP_BACKEND ?? ''}/recordingrules`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ room_sid, rules }),
@@ -90,7 +90,7 @@ export default function useFirebaseAuth() {
       : null;
   };
 
-  const signIn = useCallback((id_token: string, service: string = 'google') => {
+  const signIn = useCallback((id_token?: string, service: string = 'google') => {
     if (id_token) {
       const credential = getCredential(id_token, service);
       return firebase

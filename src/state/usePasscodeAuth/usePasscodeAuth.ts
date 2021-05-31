@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
+const endpoint = `${process.env.REACT_APP_BACKEND ?? ''}${process.env.REACT_APP_TOKEN_ENDPOINT}` || '/token';
 
 export function getPasscode() {
   const match = window.location.search.match(/passcode=(.*)&?/);
@@ -81,7 +81,7 @@ export default function usePasscodeAuth() {
 
   const updateRecordingRules = useCallback(
     async (room_sid, rules) => {
-      return fetch('/recordingrules', {
+      return fetch(`${process.env.REACT_APP_BACKEND ?? ''}/recordingrules`, {
         headers: {
           'Content-Type': 'application/json',
         },

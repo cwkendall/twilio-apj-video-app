@@ -1,4 +1,3 @@
-import firebaseAdmin from 'firebase-admin';
 import Twilio from 'twilio';
 
 const AccessToken = Twilio.jwt.AccessToken;
@@ -6,36 +5,7 @@ const VideoGrant = AccessToken.VideoGrant;
 const ChatGrant = AccessToken.ChatGrant;
 const MAX_ALLOWED_SESSION_DURATION = 14400;
 
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(JSON.parse(process.env.SERVICE_ACCOUNT_TOKEN)),
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-});
-
-module.exports = async (req, res) => {
-  const authHeader = req.headers['authorization'];
-
-  if (!authHeader) {
-    return res.status(401).send();
-  }
-
-  try {
-    // Here we authenticate users be verifying the ID token that was sent
-    const token = await firebaseAdmin.auth().verifyIdToken(authHeader);
-
-    // Here we authorize users to use this application only if they have a
-    // Twilio email address. The logic in this if statement can be changed if
-    // you would like to authorize your users in a different manner.
-    if (token.email && /@twilio.com$/.test(token.email)) {
-      tokenHandler(req, res);
-    } else {
-      res.status(401).send();
-    }
-  } catch {
-    res.status(401).send();
-  }
-};
-
-const tokenHandler = async (request, response) => {
+module.exports = async (request, response) => {
   const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
   const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
   const TWILIO_API_KEY_SID = process.env.TWILIO_API_KEY_SID;
@@ -43,7 +13,13 @@ const tokenHandler = async (request, response) => {
   const ROOM_TYPE = process.env.ROOM_TYPE;
   const CONVERSATIONS_SERVICE_SID = process.env.CONVERSATIONS_SERVICE_SID;
 
-  const { user_identity, room_name, create_room = true, create_conversation = false, media_region = 'gll' } = request.body;
+  const {
+    user_identity,
+    room_name,
+    create_room = true,
+    create_conversation = false,
+    media_region = 'gll',
+  } = request.body;
 
   response.setHeader('Content-Type', 'application/json');
 
@@ -101,7 +77,7 @@ const tokenHandler = async (request, response) => {
     } catch (e) {
       try {
         // If room doesn't exist, create it
-        room = await client.video.rooms.create({ uniqueName: room_name, type: ROOM_TYPE, mediaRegion: media_region});
+        room = await client.video.rooms.create({ uniqueName: room_name, type: ROOM_TYPE, mediaRegion: media_region });
       } catch (e) {
         response.status(500);
         response.send({
