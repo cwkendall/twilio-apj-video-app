@@ -1,8 +1,12 @@
 import { RequestHandler } from 'express';
 import firebaseAdmin from 'firebase-admin';
 
+const SERVICE_ACCOUNT_KEY = process.env.SERVICE_ACCOUNT_TOKEN !== undefined
+  ? JSON.parse(process.env.SERVICE_ACCOUNT_TOKEN)
+  : require('./serviceAccountKey.json');
+
 firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(require('./serviceAccountKey.json')),
+  credential: firebaseAdmin.credential.cert(SERVICE_ACCOUNT_KEY),
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
 });
 
